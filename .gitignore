@@ -452,3 +452,6 @@ $RECYCLE.BIN/
 ## 
 **/bin/
 **/obj/
+**/projects
+**/appsettings.json
+**/appsettings.Development.json
