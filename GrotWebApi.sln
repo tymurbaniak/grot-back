@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31112.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrotWebApi", "GrotWebApi\GrotWebApi.csproj", "{80A2E8E9-948C-4BFE-802C-21F6BB6F1066}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagement", "UserManagement\UserManagement.csproj", "{3D3E468C-2A67-4A78-8F07-2FE7AB7BF128}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grot", "Grot\Grot.csproj", "{D5F9D66A-1411-4623-B7EC-178269076267}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80A2E8E9-948C-4BFE-802C-21F6BB6F1066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80A2E8E9-948C-4BFE-802C-21F6BB6F1066}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80A2E8E9-948C-4BFE-802C-21F6BB6F1066}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80A2E8E9-948C-4BFE-802C-21F6BB6F1066}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D3E468C-2A67-4A78-8F07-2FE7AB7BF128}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D3E468C-2A67-4A78-8F07-2FE7AB7BF128}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D3E468C-2A67-4A78-8F07-2FE7AB7BF128}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D3E468C-2A67-4A78-8F07-2FE7AB7BF128}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5F9D66A-1411-4623-B7EC-178269076267}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5F9D66A-1411-4623-B7EC-178269076267}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5F9D66A-1411-4623-B7EC-178269076267}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5F9D66A-1411-4623-B7EC-178269076267}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E089C72E-FCE5-429C-82BB-724E5291DD37}
+	EndGlobalSection
+EndGlobal
