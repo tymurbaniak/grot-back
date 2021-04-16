@@ -15,6 +15,9 @@ namespace Grot.Services
 
     public class ProcessService : IProcessService
     {
+        private const string inputSettingsName = "input.txt";
+        private const string inputImageName = "inputpng";
+
         public void RequestProcess(List<InputParameterValue> parameterValues, string imageDataString, IUser user)
         {
             DirectoryInfo projectDir = CreateProjectDirectory(user);
@@ -24,7 +27,8 @@ namespace Grot.Services
         }
 
         private void ExecuteGrot()
-        {            
+        {
+            string grotCommand = $"python3 ";
         }
 
         private void CreateImage(string imageDataString, DirectoryInfo projectDir)
@@ -34,7 +38,7 @@ namespace Grot.Services
             {
                 byte[] imageContent = Convert.FromBase64String(imageParts[1]);
                 char separator = Path.DirectorySeparatorChar;
-                string imagePath = $"{projectDir.FullName}{separator}input.png";
+                string imagePath = $"{projectDir.FullName}{separator}{inputImageName}";
                 using FileStream fs = File.Create(imagePath);
                 fs.Write(imageContent, 0, imageContent.Length);
             }
@@ -46,7 +50,7 @@ namespace Grot.Services
             var paramFileCreator = new InputParametersCreator();
             string inputFileContentString = paramFileCreator.CreateInputParametersString(parameterValues);
             char separator = Path.DirectorySeparatorChar;
-            string inputFilePath = $"{projectDir.FullName}{separator}input.txt";
+            string inputFilePath = $"{projectDir.FullName}{separator}{inputSettingsName}";
 
             using FileStream fs = File.Create(inputFilePath);
             byte[] inputContent = Encoding.UTF8.GetBytes(inputFileContentString);

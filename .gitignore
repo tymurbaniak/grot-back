@@ -455,3 +455,4 @@ $RECYCLE.BIN/
 **/projects
 **/appsettings.json
 **/appsettings.Development.json
+**/appsettings.Docker.json

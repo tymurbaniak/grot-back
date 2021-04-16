@@ -1,0 +1,13 @@
+<p-toolbar>
+    <div class="p-toolbar-group-left">
+        <img src="./../../../assets/logo.png">        
+    </div>
+    
+    <div class="p-toolbar-group-right">
+        <ng-container *ngIf="isDev">
+            <button pButton class="p-mr-2 p-mb-2" label="Test api" [routerLink]="['/grot/test']"></button>
+        </ng-container>        
+        <button pButton class="p-mr-2 p-mb-2" label="Sign in" [routerLink]="['/auth/login']"></button>
+        <button pButton class="p-mr-2 p-mb-2 p-button-success" label="Sign up" [routerLink]="['/auth/register']"></button>
+    </div>
+</p-toolbar>

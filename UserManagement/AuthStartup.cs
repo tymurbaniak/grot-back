@@ -15,7 +15,7 @@ namespace UserManagement
     {
         public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            string mySqlConnectionStr = configuration.GetConnectionString("DefaultConnection");
+            string mySqlConnectionStr = GetConnectionString(configuration);
             services.AddDbContextPool<UsersDBContext>(options => options.UseMySql(mySqlConnectionStr));
 
             // configure strongly typed settings objects
@@ -48,6 +48,19 @@ namespace UserManagement
 
             // configure DI for application services
             services.AddScoped<IUserService, UserService>();
+        }
+
+        private static string GetConnectionString(IConfiguration configuration)
+        {
+            string connectionString = configuration.GetConnectionString("DefaultConnection");
+            connectionString = string.IsNullOrEmpty(connectionString) ? configuration["CONNECTION_STRING"] : connectionString;
+
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new ApplicationException("No database connection string");
+            }
+
+            return connectionString;
         }
     }
 }

@@ -21,6 +21,14 @@ namespace GrotWebApi
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureAppConfiguration(configurationBuilder =>
+                {
+                    string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                    Console.WriteLine("======================================================");
+                    Console.WriteLine("ADDED CUSTOM JSON");
+                    Console.WriteLine("======================================================");
+                    configurationBuilder.AddJsonFile($"appsettings.{environment}.json", optional: false);                    
                 });
     }
 }

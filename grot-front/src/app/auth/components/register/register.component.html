@@ -1,0 +1,41 @@
+<div class="p-grid p-jc-center p-mt-4">
+    <div class="p-col-4">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <p-card>
+                <ng-template pTemplate="header">
+                    <div class="p-grid p-jc-center">
+                        <div class="p-col-2" style="text-align: center;">
+                            <h3>Yo!</h3>
+                        </div>
+                    </div>
+                </ng-template>
+
+                <div class="p-fluid">
+                    <div class="p-field">
+                        <label for="username">Name</label>
+                        <input id="username" type="text" pInputText formControlName="username" />
+                    </div>
+                    <div class="p-field">
+                        <label for="email">Email</label>
+                        <input id="email" type="text" pInputText formControlName="email" />
+                    </div>
+                    <div class="p-field">
+                        <label for="password1">Password</label>
+                        <p-password id="password1" [toggleMask]="true" formControlName="password1">
+                        </p-password>
+                    </div>
+                    <div class="p-field">
+                        <label for="password2">Repeat Password</label>
+                        <p-password id="password2" [toggleMask]="true" formControlName="password2">
+                        </p-password>
+                    </div>
+                </div>
+
+                <ng-template pTemplate="footer">
+                    <button pButton type="submit" label="Register" class="p-d-block p-mx-auto"></button>
+                    <p-messages *ngIf="errors.length > 0" [(value)]="errors" [enableService]="false"></p-messages>                    
+                </ng-template>
+            </p-card>
+        </form>
+    </div>
+</div>

@@ -41,7 +41,7 @@ namespace UserManagement.DBContexts
             modelBuilder.Entity<User>().Property(u => u.LastName).HasColumnType("nvarchar(50)").IsRequired(false);
             modelBuilder.Entity<User>().Property(u => u.Name).HasColumnType("nvarchar(50)").IsRequired();
             modelBuilder.Entity<User>().Property(u => u.Password).HasColumnType("nvarchar(60)").IsRequired();
-            modelBuilder.Entity<User>().Property(u => u.Email).HasColumnType("nvarchar(50)").IsRequired();
+            modelBuilder.Entity<User>().Property(u => u.Email).HasColumnType("nvarchar(60)").IsRequired();
             modelBuilder.Entity<User>().Property(u => u.UserGroupId).HasColumnType("int").IsRequired(false);
             modelBuilder.Entity<User>().Property(u => u.CreationDateTime).HasColumnType("datetime").IsRequired();
             modelBuilder.Entity<User>().Property(u => u.LastUpdateDateTime).HasColumnType("datetime").IsRequired(false);

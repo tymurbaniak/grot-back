@@ -1,0 +1,30 @@
+<div class="p-grid p-fluid">
+    <div class="p-col-12 p-md-8">
+        <div class="p-inputgroup">
+            <span class="p-buttonset">
+                <ng-container *ngFor="let color of colors">
+                    <button pButton type="button" *ngIf="color !== selectedColor" icon="pi" [ngStyle]="{ 'background-color': color}" (click)="setColor(color)"></button>
+                    <button pButton type="button" *ngIf="color === selectedColor" icon="pi pi-check" [ngStyle]="{ 'background-color': color}" (click)="setColor(color)"></button>
+                </ng-container>
+            </span>            
+        </div>    
+    </div>
+    <div class="p-col-12 p-md-4">
+        <p-dropdown [(ngModel)]="selectedSize" [options]="sizes" placeholder="Brush size" (onChange)="sizeChanged($event)" optionLabel="name"></p-dropdown>
+    </div>
+</div>
+<div>
+    <canvas id="canv" #canv class="canvas-style" 
+    (mousedown)="startDrawing($event)"
+    (mousemove)="drawing($event)"
+    (mouseup)="stopDrawing($event)"
+    ></canvas>
+</div>
+<p-toolbar>
+    <div class="p-toolbar-group-left">
+        <button pButton label="Process!" (click)="onProcessClicked($event)"></button>
+    </div>
+    <div class="p-toolbar-group-right">
+        <p-fileUpload #fileUpload [auto]="true" name="myfile[]" mode="basic" [customUpload]="true" (uploadHandler)="setCanvasImage($event)" chooseLabel="Upload image"></p-fileUpload>
+    </div>
+</p-toolbar>
