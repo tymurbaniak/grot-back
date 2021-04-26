@@ -5,24 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Settings\inputParameters.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Settings\inputParameters.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="DBContexts\" />
     <Folder Include="ViewModels\ParametersEnums\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.SignalR.Core" Version="2.4.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="NLog" Version="4.7.9" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.7.2" />
   </ItemGroup>
 
   <ItemGroup>

@@ -23,6 +23,8 @@ namespace Grot.Services
                 sb.AppendLine($"{inputParameter.Name} {values}");
             }
 
+            sb.AppendLine($"bmp input.png");
+
             return sb.ToString();
         }
 

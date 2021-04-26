@@ -1,5 +1,11 @@
 ﻿[
   {
+    "name": "project",
+    "displayName": "Project",
+    "type": "text",
+    "default": "project"
+  },
+  {
     "name": "problem",
     "displayName": "Problem",
     "type": "select",
@@ -36,7 +42,7 @@
     ]
   },
   {
-    "name": "dimensionUnit",
+    "name": "unit",
     "displayName": "Unit",
     "type": "select",
     "default": "cm",
@@ -86,18 +92,8 @@
   {
     "name": "load",
     "displayName": "Force direction",
-    "type": "select",
-    "default": "X",
-    "options": [
-      {
-        "name": "X",
-        "value": "X"
-      },
-      {
-        "name": "Y",
-        "value": "Y"
-      }
-    ]
+    "type": "load",
+    "default": "0 -800 f0f"
   },
   {
     "name": "solver",
@@ -118,8 +114,8 @@
   {
     "name": "disp",
     "displayName": "Displacements",
-    "type": "select",
-    "default": "x",
+    "type": "multiSelect",
+    "default": "",
     "options": [
       {
         "name": "X",

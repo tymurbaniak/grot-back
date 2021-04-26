@@ -20,6 +20,13 @@ FROM build AS publish
 RUN dotnet publish "GrotWebApi.csproj" -c Release -o /app/publish
 
 FROM base AS final
+COPY ["Grot/script", "/app/script"]
+COPY ["Grot/script/grot/input.txt", "/app/input.txt"]
+COPY ["Grot/script/grot/gallery.txt", "/app/gallery.txt"]
+RUN apt-get update && apt-get install -y \
+  python3 \
+  python3-pip
+RUN python3 -m pip install -r /app/script/grot/requirements.txt
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "GrotWebApi.dll"]

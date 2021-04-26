@@ -5,6 +5,11 @@ using System.IO;
 using System.Text;
 using UserManagement.Interfaces;
 using System.Drawing;
+using System.Threading.Tasks;
+using System.Diagnostics;
+using Grot.Hubs;
+using Microsoft.AspNet.SignalR;
+using System.Linq;
 
 namespace Grot.Services
 {
@@ -16,19 +21,41 @@ namespace Grot.Services
     public class ProcessService : IProcessService
     {
         private const string inputSettingsName = "input.txt";
-        private const string inputImageName = "inputpng";
+        private const string inputImageName = "input.png";
+        private readonly IHubContext<GrotHub> grotHub;        
+
+        public ProcessService(IHubContext<GrotHub> grotHub)
+        {
+            this.grotHub = grotHub;
+        }
 
         public void RequestProcess(List<InputParameterValue> parameterValues, string imageDataString, IUser user)
         {
-            DirectoryInfo projectDir = CreateProjectDirectory(user);
+            string projectName = parameterValues.Single(p => p.Name.Equals("project")).Values[0];
+            DirectoryInfo projectDir = CreateProjectDirectory(user, projectName);
             CreateParametersInputFile(parameterValues, projectDir);
             CreateImage(imageDataString, projectDir);
-            ExecuteGrot();
+            DirectoryInfo outputDir = CreateOutputDirectory(projectDir);
+            ExecuteGrot(projectDir, outputDir, user, projectName);
         }
 
-        private void ExecuteGrot()
+        private DirectoryInfo CreateOutputDirectory(DirectoryInfo projectDir)
         {
-            string grotCommand = $"python3 ";
+            string outputPath = $"{projectDir.FullName}{Path.DirectorySeparatorChar}output";
+            return Directory.CreateDirectory(outputPath);
+        }
+
+        private void ExecuteGrot(DirectoryInfo projectDir, DirectoryInfo outputDir, IUser user, string projectName)
+        {
+            char sep = Path.DirectorySeparatorChar;
+            string arguments = $"{sep}app{sep}script{sep}grot{sep}run.py -i {projectDir.FullName} -o {outputDir.FullName}";
+            var process = Process.Start("python3", arguments);
+            process.Exited += new EventHandler(async (object sender, EventArgs e) =>
+            {
+                await this.grotHub.Clients.User(user.Name).SendProcessingDoneMessage(
+                    $"Processing done for: {projectName}"
+                    , user.Name);
+            });
         }
 
         private void CreateImage(string imageDataString, DirectoryInfo projectDir)
@@ -57,7 +84,7 @@ namespace Grot.Services
             fs.Write(inputContent, 0, inputContent.Length);
         }
 
-        private DirectoryInfo CreateProjectDirectory(IUser user)
+        private DirectoryInfo CreateProjectDirectory(IUser user, string projectName)
         {
             string current = Directory.GetCurrentDirectory();
             char separator = Path.DirectorySeparatorChar;
@@ -75,7 +102,7 @@ namespace Grot.Services
                 Directory.CreateDirectory(userPath);
             }
 
-            string newProjectName = Guid.NewGuid().ToString();
+            string newProjectName = projectName;
             string newProjectDirectory = $"{userPath}{separator}{newProjectName}";
             return Directory.CreateDirectory(newProjectDirectory);
         }
