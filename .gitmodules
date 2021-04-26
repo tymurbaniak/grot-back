@@ -1,0 +1,6 @@
+[submodule "grot-front"]
+	path = grot-front
+	url = https://github.com/tymurbaniak/grot-front.git
+[submodule "Grot/script/grot"]
+	path = Grot/script/grot
+	url = https://github.com/tymurbaniak/grot.git
