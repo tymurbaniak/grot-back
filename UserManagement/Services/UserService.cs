@@ -51,7 +51,7 @@ namespace UserManagement.Services
             var refreshToken = GenerateRefreshToken(ipAddress);
 
             // save refresh token
-            if(user.RefreshTokens == null)
+            if (user.RefreshTokens == null)
             {
                 user.RefreshTokens = new List<RefreshToken>();
             }
@@ -140,7 +140,8 @@ namespace UserManagement.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Name, user.Name)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(15),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

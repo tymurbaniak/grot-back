@@ -14,10 +14,12 @@ COPY ["Grot/Grot.csproj", "Grot/"]
 RUN dotnet restore "GrotWebApi/GrotWebApi.csproj"
 COPY . .
 WORKDIR "/src/GrotWebApi"
-RUN dotnet build "GrotWebApi.csproj" -c Release -o /app/build
+ARG Mode=Debug
+RUN echo "$Mode"
+RUN dotnet build "GrotWebApi.csproj" -c $Mode -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "GrotWebApi.csproj" -c Release -o /app/publish
+RUN dotnet publish "GrotWebApi.csproj" -c $Mode -o /app/publish
 
 FROM base AS final
 COPY ["Grot/script", "/app/script"]

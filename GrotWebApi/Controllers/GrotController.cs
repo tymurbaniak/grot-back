@@ -1,8 +1,10 @@
-﻿using Grot.Services;
+﻿using Grot.Hubs;
+using Grot.Services;
 using Grot.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,14 +21,17 @@ namespace GrotWebApi.Controllers
         private readonly IParametersService parametersService;
         private readonly IProcessService processService;
         private readonly IUserService userService;
+        private readonly IHubContext<GrotHub> grotHub;
         public GrotController(
             IParametersService parametersService, 
             IProcessService processService,
-            IUserService userService)
+            IUserService userService,
+            IHubContext<GrotHub> grotHub)
         {
             this.parametersService = parametersService;
             this.processService = processService;
             this.userService = userService;
+            this.grotHub = grotHub;
         }
 
         [AllowAnonymous]
@@ -53,6 +58,15 @@ namespace GrotWebApi.Controllers
             var result = this.parametersService.GetParameters();
 
             return Ok(result);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("signalrtest")]
+        public IActionResult SignalRTest()
+        {
+            grotHub.Clients.All.SendAsync("receive", "SendAsyncTestMessage");
+            grotHub.Clients.All.SendCoreAsync("receive", new string[] { "SendAsyncCoreMessage" });
+            return Ok();
         }
     }
 }

@@ -1,15 +1,13 @@
-﻿using Grot.ViewModels;
+﻿using Grot.Hubs;
+using Grot.ViewModels;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using UserManagement.Interfaces;
-using System.Drawing;
-using System.Threading.Tasks;
-using System.Diagnostics;
-using Grot.Hubs;
-using Microsoft.AspNet.SignalR;
-using System.Linq;
 
 namespace Grot.Services
 {
@@ -22,7 +20,7 @@ namespace Grot.Services
     {
         private const string inputSettingsName = "input.txt";
         private const string inputImageName = "input.png";
-        private readonly IHubContext<GrotHub> grotHub;        
+        private readonly IHubContext<GrotHub> grotHub;
 
         public ProcessService(IHubContext<GrotHub> grotHub)
         {
@@ -46,15 +44,15 @@ namespace Grot.Services
         }
 
         private void ExecuteGrot(DirectoryInfo projectDir, DirectoryInfo outputDir, IUser user, string projectName)
-        {
+        {            
             char sep = Path.DirectorySeparatorChar;
             string arguments = $"{sep}app{sep}script{sep}grot{sep}run.py -i {projectDir.FullName} -o {outputDir.FullName}";
             var process = Process.Start("python3", arguments);
+            process.EnableRaisingEvents = true;
             process.Exited += new EventHandler(async (object sender, EventArgs e) =>
             {
-                await this.grotHub.Clients.User(user.Name).SendProcessingDoneMessage(
-                    $"Processing done for: {projectName}"
-                    , user.Name);
+                await this.grotHub.Clients.User(user.Name)
+                    .SendCoreAsync("processingDoneReceived", new string[] { $"Processing done for: {projectName}" });
             });
         }
 
