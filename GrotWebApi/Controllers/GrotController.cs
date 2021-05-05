@@ -22,16 +22,20 @@ namespace GrotWebApi.Controllers
         private readonly IProcessService processService;
         private readonly IUserService userService;
         private readonly IHubContext<GrotHub> grotHub;
+        private readonly IProjectsService projectsService;
+
         public GrotController(
             IParametersService parametersService, 
             IProcessService processService,
             IUserService userService,
-            IHubContext<GrotHub> grotHub)
+            IHubContext<GrotHub> grotHub,
+            IProjectsService projectsService)
         {
             this.parametersService = parametersService;
             this.processService = processService;
             this.userService = userService;
             this.grotHub = grotHub;
+            this.projectsService = projectsService;
         }
 
         [AllowAnonymous]
@@ -49,6 +53,14 @@ namespace GrotWebApi.Controllers
             this.processService.RequestProcess(processCall.InputParameters, processCall.Image, user);
 
             return Ok();
+        }
+
+        [HttpPost("projectslist")]
+        public IActionResult ProjectsList([FromBody] ProjectsListRequest listRequest)
+        {
+            var projectsList = this.projectsService.GetProjectsList(listRequest.UserName);
+
+            return Ok(projectsList);
         }
 
         [AllowAnonymous]

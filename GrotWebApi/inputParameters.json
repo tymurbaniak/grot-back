@@ -96,22 +96,6 @@
     "default": "0 -800 f0f"
   },
   {
-    "name": "solver",
-    "displayName": "Solver",
-    "type": "select",
-    "default": "direct",
-    "options": [
-      {
-        "name": "Direct",
-        "value": "direct"
-      },
-      {
-        "name": "LSQS",
-        "value": "lsqs"
-      }
-    ]
-  },
-  {
     "name": "disp",
     "displayName": "Displacements",
     "type": "multiSelect",

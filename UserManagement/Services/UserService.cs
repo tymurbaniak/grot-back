@@ -69,6 +69,7 @@ namespace UserManagement.Services
 
             // return null if no user found with token
             if (user == null) return null;
+            if (user.RefreshTokens == null) return null;
 
             var refreshToken = user.RefreshTokens.Single(x => x.Token == token);
 
@@ -105,6 +106,7 @@ namespace UserManagement.Services
 
             // return false if no user found with token
             if (user == null) return false;
+            if (user.RefreshTokens == null) return false;
 
             var refreshToken = user.RefreshTokens.Single(x => x.Token == token);
 
