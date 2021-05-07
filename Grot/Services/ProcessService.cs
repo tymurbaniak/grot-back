@@ -13,7 +13,7 @@ namespace Grot.Services
 {
     public interface IProcessService
     {
-        public void RequestProcess(List<InputParameterValue> parameterValues, string imageDataString, IUser user);
+        public ProcessStartedResponse RequestProcess(List<InputParameterValue> parameterValues, string imageDataString, IUser user);
     }
 
     public class ProcessService : IProcessService
@@ -27,14 +27,14 @@ namespace Grot.Services
             this.grotHub = grotHub;
         }
 
-        public void RequestProcess(List<InputParameterValue> parameterValues, string imageDataString, IUser user)
+        public ProcessStartedResponse RequestProcess(List<InputParameterValue> parameterValues, string imageDataString, IUser user)
         {
             string projectName = parameterValues.Single(p => p.Name.Equals("project")).Values[0];
             DirectoryInfo projectDir = CreateProjectDirectory(user, projectName);
             CreateParametersInputFile(parameterValues, projectDir);
             CreateImage(imageDataString, projectDir);
             DirectoryInfo outputDir = CreateOutputDirectory(projectDir);
-            ExecuteGrot(projectDir, outputDir, user, projectName);
+            return ExecuteGrot(projectDir, outputDir, user, projectName);
         }
 
         private DirectoryInfo CreateOutputDirectory(DirectoryInfo projectDir)
@@ -43,7 +43,7 @@ namespace Grot.Services
             return Directory.CreateDirectory(outputPath);
         }
 
-        private void ExecuteGrot(DirectoryInfo projectDir, DirectoryInfo outputDir, IUser user, string projectName)
+        private ProcessStartedResponse ExecuteGrot(DirectoryInfo projectDir, DirectoryInfo outputDir, IUser user, string projectName)
         {            
             char sep = Path.DirectorySeparatorChar;
             string arguments = $"{sep}app{sep}script{sep}grot{sep}run.py -i {projectDir.FullName} -o {outputDir.FullName}";
@@ -54,6 +54,15 @@ namespace Grot.Services
                 await this.grotHub.Clients.User(user.Name)
                     .SendCoreAsync("processingDoneReceived", new string[] { $"Processing done for: {projectName}" });
             });
+
+            var response = new ProcessStartedResponse
+            {
+                Started = true,
+                DateTime = process.StartTime.ToString(),
+                Id = process.Id.ToString()
+            };
+
+            return response;
         }
 
         private void CreateImage(string imageDataString, DirectoryInfo projectDir)

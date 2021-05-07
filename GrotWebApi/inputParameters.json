@@ -91,7 +91,7 @@
   },
   {
     "name": "load",
-    "displayName": "Force direction",
+    "displayName": "Force direction (X/Y)",
     "type": "load",
     "default": "0 -800 f0f"
   },

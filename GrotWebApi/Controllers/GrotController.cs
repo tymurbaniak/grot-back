@@ -50,9 +50,9 @@ namespace GrotWebApi.Controllers
                 return Unauthorized(new { message = "Invalid token" });
             }
 
-            this.processService.RequestProcess(processCall.InputParameters, processCall.Image, user);
+            var response = this.processService.RequestProcess(processCall.InputParameters, processCall.Image, user);            
 
-            return Ok();
+            return Ok(response);
         }
 
         [HttpPost("projectslist")]
