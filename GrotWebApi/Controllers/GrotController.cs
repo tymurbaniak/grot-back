@@ -55,12 +55,20 @@ namespace GrotWebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPost("projectslist")]
-        public IActionResult ProjectsList([FromBody] ProjectsListRequest listRequest)
+        [HttpPost("projects")]
+        public IActionResult Projects([FromBody] ProjectsListRequest listRequest)
         {
             var projectsList = this.projectsService.GetProjectsList(listRequest.UserName);
 
             return Ok(projectsList);
+        }
+
+        [HttpPost("project")]
+        public IActionResult Project([FromBody] ProjectRequest projectRequest)
+        {
+            ProjectContent project = this.projectsService.GetProject(projectRequest.ProjectName, projectRequest.UserName);
+
+            return Ok(project);
         }
 
         [AllowAnonymous]

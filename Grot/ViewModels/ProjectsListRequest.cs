@@ -8,4 +8,10 @@ namespace Grot.ViewModels
     {
         public string UserName { get; set; }
     }
+
+    public class ProjectRequest
+    {
+        public string ProjectName { get; set; }
+        public string UserName { get; set; }
+    }
 }
