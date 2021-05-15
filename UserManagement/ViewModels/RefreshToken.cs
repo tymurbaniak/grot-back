@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using UserManagement.Interfaces;
 
 namespace UserManagement.ViewModels
 {
@@ -19,5 +20,6 @@ namespace UserManagement.ViewModels
         public string RevokedByIp { get; set; }
         public string ReplacedByToken { get; set; }
         public bool IsActive => Revoked == null && !IsExpired;
+        public int UserId { get; set; }
     }
 }

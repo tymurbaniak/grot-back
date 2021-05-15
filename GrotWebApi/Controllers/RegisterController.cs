@@ -17,8 +17,9 @@ namespace GrotWebApi.Controllers
     [Route("[controller]")]
     public class RegisterController : ControllerBase
     {
-        private readonly IUserService userService;        
+        private readonly IUserService userService;
         private readonly IHCaptchaTokenService captchaService;
+        private readonly bool isDev = false;
 
         public RegisterController(
             IUserService userService,
@@ -27,26 +28,28 @@ namespace GrotWebApi.Controllers
         {
             this.userService = userService;
             this.captchaService = captchaService;
+            isDev = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT").Equals("Development");
         }
 
         [AllowAnonymous]
         [HttpPost("newuser")]
         public IActionResult NewUser([FromBody] RegisterRequest model)
-        {
-            string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            //bool isProduction = environment.Equals("Production");
-
-            if (string.IsNullOrEmpty(model.CaptchaToken))
+        {            
+            if (!isDev)
             {
-                return BadRequest(new { message = "Bots are not allowed to create accounts" });
+                if (string.IsNullOrEmpty(model.CaptchaToken))
+                {
+                    return BadRequest(new { message = "Bots are not allowed to create accounts" });
+                }
+
+                var hCaptchaVerification = captchaService.IsCaptchaValid(model.CaptchaToken);
+
+                if (!hCaptchaVerification)
+                {
+                    return BadRequest(new { message = "Bots are not allowed to create accounts" });
+                }
             }
 
-            var hCaptchaVerification = captchaService.IsCaptchaValid(model.CaptchaToken);
-
-            if (!hCaptchaVerification)
-            {
-                return BadRequest(new { message = "Bots are not allowed to create accounts" });
-            }
 
             var response = userService.Register(model);
 

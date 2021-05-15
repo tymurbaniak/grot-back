@@ -32,7 +32,7 @@ namespace UserManagement.Migrations
                     Name = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(50)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(50)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(60)", nullable: false),
                     UserGroupId = table.Column<int>(type: "int", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(60)", nullable: false),
                     CreationDateTime = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -49,34 +49,34 @@ namespace UserManagement.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RefreshToken",
+                name: "RefreshTokens",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Token = table.Column<string>(nullable: true),
-                    Expires = table.Column<DateTime>(nullable: false),
-                    Created = table.Column<DateTime>(nullable: false),
-                    CreatedByIp = table.Column<string>(nullable: true),
-                    Revoked = table.Column<DateTime>(nullable: true),
-                    RevokedByIp = table.Column<string>(nullable: true),
-                    ReplacedByToken = table.Column<string>(nullable: true),
-                    UserId = table.Column<int>(nullable: true)
+                    Token = table.Column<string>(type: "nvarchar(254)", nullable: true),
+                    Expires = table.Column<DateTime>(type: "datetime", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime", nullable: false),
+                    CreatedByIp = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    Revoked = table.Column<DateTime>(type: "datetime", nullable: true),
+                    RevokedByIp = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    ReplacedByToken = table.Column<string>(type: "nvarchar(254)", nullable: true),
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RefreshToken", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RefreshToken_Users_UserId",
+                        name: "FK_RefreshTokens_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_RefreshToken_UserId",
-                table: "RefreshToken",
+                name: "IX_RefreshTokens_UserId",
+                table: "RefreshTokens",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -110,7 +110,7 @@ namespace UserManagement.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "RefreshToken");
+                name: "RefreshTokens");
 
             migrationBuilder.DropTable(
                 name: "Users");

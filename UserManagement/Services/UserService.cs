@@ -11,6 +11,7 @@ using UserManagement.ViewModels;
 using UserManagement.Settings;
 using UserManagement.DBContexts;
 using UserManagement.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace UserManagement.Services
 {
@@ -34,7 +35,7 @@ namespace UserManagement.Services
             UsersDBContext context,
             IOptions<AppSettings> appSettings)
         {
-            _context = context;
+            _context = context;            
             _appSettings = appSettings.Value;
         }
 
@@ -49,6 +50,7 @@ namespace UserManagement.Services
             // authentication successful so generate jwt and refresh tokens
             var jwtToken = GenerateJwtToken(user);
             var refreshToken = GenerateRefreshToken(ipAddress);
+            refreshToken.UserId = user.Id;
 
             // save refresh token
             if (user.RefreshTokens == null)
@@ -65,7 +67,8 @@ namespace UserManagement.Services
 
         public AuthenticateResponse RefreshToken(string token, string ipAddress)
         {
-            var user = _context.Users.SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token == token));
+            var user = _context.Users.Include(u => u.RefreshTokens)
+                        .SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token == token));            
 
             // return null if no user found with token
             if (user == null) return null;
@@ -160,7 +163,7 @@ namespace UserManagement.Services
             return new RefreshToken
             {
                 Token = Convert.ToBase64String(randomBytes),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddDays(1),
                 Created = DateTime.UtcNow,
                 CreatedByIp = ipAddress
             };

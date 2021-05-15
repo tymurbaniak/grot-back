@@ -14,15 +14,14 @@ namespace GrotWebApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserService userService;
-        private readonly IHCaptchaTokenService captchaService;
+        private readonly bool isDev = false;
 
         public AuthController(
-            IUserService userService,
-            IHCaptchaTokenService captchaService
+            IUserService userService
             )
         {
             this.userService = userService;
-            this.captchaService = captchaService;
+            isDev = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT").Equals("Development");
         }
 
         [AllowAnonymous]
@@ -87,7 +86,9 @@ namespace GrotWebApi.Controllers
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Expires = DateTime.UtcNow.AddDays(7)
+                Expires = DateTime.UtcNow.AddDays(7),
+                SameSite = SameSiteMode.None,
+                Secure = !isDev
             };
             Response.Cookies.Append("refreshToken", token, cookieOptions);
         }

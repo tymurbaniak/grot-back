@@ -16,6 +16,6 @@ namespace UserManagement.DBModels
         public string Password { get; set; }
         public DateTime CreationDateTime { get; set; }
         public DateTime? LastUpdateDateTime { get; set; }
-        public List<RefreshToken>? RefreshTokens { get; set; }
+        public List<RefreshToken>? RefreshTokens { get; set; }        
     }
 }

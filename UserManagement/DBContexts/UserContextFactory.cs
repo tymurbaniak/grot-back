@@ -21,7 +21,8 @@ namespace UserManagement.DBContexts
                 .AddJsonFile($"appsettings.{environment}.json", optional: true)
                 .AddEnvironmentVariables();
 
-            bool isRuningInContainer = bool.Parse(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"));
+            string isRuningInContainerString = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER");
+            bool isRuningInContainer = bool.Parse(string.IsNullOrEmpty(isRuningInContainerString) ? "false" : isRuningInContainerString);
 
             if (isRuningInContainer)
             {
