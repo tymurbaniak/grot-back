@@ -8,6 +8,7 @@ namespace Grot.ViewModels
         public string DisplayName { get; set; }
         public string Type { get; set; }
         public string Default { get; set; }
+        public bool Required { get; set; }
         public List<Option> Options { get; set; }
     }
 }

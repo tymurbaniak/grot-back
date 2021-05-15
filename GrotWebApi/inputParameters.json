@@ -3,13 +3,15 @@
     "name": "project",
     "displayName": "Project",
     "type": "text",
-    "default": "project"
+    "default": "project",
+    "required": "true"
   },
   {
     "name": "problem",
     "displayName": "Problem",
     "type": "select",
     "default": "planestress",
+    "required": "true",
     "options": [
       {
         "name": "Planestress",
@@ -26,6 +28,7 @@
     "displayName": "Material",
     "type": "select",
     "default": "steel",
+    "required": "true",
     "options": [
       {
         "name": "Steel",
@@ -46,6 +49,7 @@
     "displayName": "Unit",
     "type": "select",
     "default": "cm",
+    "required": "true",
     "options": [
       {
         "name": "NM",
@@ -81,18 +85,21 @@
     "name": "scale",
     "displayName": "Scale",
     "type": "number",
+    "required": "true",
     "default": "1"
   },
   {
     "name": "thickness",
     "displayName": "Thickness",
     "type": "number",
+    "required": "true",
     "default": "1"
   },
   {
     "name": "load",
     "displayName": "Force direction (X/Y)",
     "type": "load",
+    "required": "true",
     "default": "0 -800 f0f"
   },
   {
@@ -119,6 +126,7 @@
     "name": "stress",
     "displayName": "Stress",
     "type": "multiSelect",
+    "required": "true",
     "default": "",
     "options": [
       {
@@ -222,7 +230,7 @@
   {
     "name": "deformed",
     "displayName": "Deformed",
-    "type": "number",
+    "type": "number",    
     "default": "1"
   },
   {
