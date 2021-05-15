@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using UserManagement.ViewModels;
 using UserManagement.Services;
+using System.Threading.Tasks;
 
 namespace GrotWebApi.Controllers
 {
@@ -12,18 +13,23 @@ namespace GrotWebApi.Controllers
     [Route("[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IUserService userService;
+        private readonly IHCaptchaTokenService captchaService;
 
-        public AuthController(IUserService userService)
+        public AuthController(
+            IUserService userService,
+            IHCaptchaTokenService captchaService
+            )
         {
-            this._userService = userService;
+            this.userService = userService;
+            this.captchaService = captchaService;
         }
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody] AuthenticateRequest model)
         {
-            var response = _userService.Authenticate(model, IpAddress());
+            var response = userService.Authenticate(model, IpAddress());
 
             if (response == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
@@ -38,7 +44,7 @@ namespace GrotWebApi.Controllers
         public IActionResult RefreshToken()
         {
             var refreshToken = Request.Cookies["refreshToken"];
-            var response = _userService.RefreshToken(refreshToken, IpAddress());
+            var response = userService.RefreshToken(refreshToken, IpAddress());
 
             if (response == null)
                 return Unauthorized(new { message = "Invalid token" });
@@ -57,7 +63,7 @@ namespace GrotWebApi.Controllers
             if (string.IsNullOrEmpty(token))
                 return BadRequest(new { message = "Token is required" });
 
-            var response = _userService.RevokeToken(token, IpAddress());
+            var response = userService.RevokeToken(token, IpAddress());
 
             if (!response)
                 return NotFound(new { message = "Token not found" });
@@ -68,7 +74,7 @@ namespace GrotWebApi.Controllers
         [HttpGet("{id}/refresh-tokens")]
         public IActionResult GetRefreshTokens(int id)
         {
-            var user = _userService.GetById(id);
+            var user = userService.GetById(id);
             if (user == null) return NotFound();
 
             return Ok(user.RefreshTokens);

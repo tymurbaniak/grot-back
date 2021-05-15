@@ -26,7 +26,8 @@ namespace UserManagement
             // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-            
+
+            services.AddAuthorization();
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -51,11 +52,11 @@ namespace UserManagement
                     OnMessageReceived = context =>
                     {
                         var accessToken = context.Request.Query["access_token"];
-                        
+
                         var path = context.HttpContext.Request.Path;
                         if (!string.IsNullOrEmpty(accessToken) &&
                             (path.StartsWithSegments("/hub"))) //move to config
-                        {                            
+                        {
                             context.Token = accessToken;
                         }
                         return Task.CompletedTask;
@@ -63,8 +64,16 @@ namespace UserManagement
                 };
             });
 
-            // configure DI for application services
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IHCaptchaTokenService, HCaptchaTokenService>();
+
+            var hCaptchaSettingsSection = configuration.GetSection("HCaptcha");
+            services.Configure<HCaptchaSettings>(hCaptchaSettingsSection);
+            var hCaptchaSettings = hCaptchaSettingsSection.Get<HCaptchaSettings>();
+            services.AddHttpClient("hCaptcha", client =>
+            {
+                client.BaseAddress = new Uri(hCaptchaSettings.Api);
+            });
         }
 
         private static string GetConnectionString(IConfiguration configuration)

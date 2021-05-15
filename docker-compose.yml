@@ -34,6 +34,9 @@ services:
       dockerfile: GrotWebApi/Dockerfile
       args:
         - Mode=Debug
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker      
+      - ASPNETCORE_URLS=http://+:80
   grot-front:
     container_name: grot-front
     image: ${DOCKER_REGISTRY-}grot-front

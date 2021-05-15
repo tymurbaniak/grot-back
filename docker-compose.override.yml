@@ -3,5 +3,5 @@ version: '3.4'
 services:
   grot-api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development      
+      - ASPNETCORE_ENVIRONMENT=Docker      
       - ASPNETCORE_URLS=http://+:80

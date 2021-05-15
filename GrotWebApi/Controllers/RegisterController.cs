@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using UserManagement.ViewModels;
 using UserManagement.Services;
 using BenjaminAbt.HCaptcha;
+using System.Net.Http;
+using UserManagement.Settings;
+using Microsoft.Extensions.Options;
 
 namespace GrotWebApi.Controllers
 {
@@ -14,11 +17,16 @@ namespace GrotWebApi.Controllers
     [Route("[controller]")]
     public class RegisterController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IUserService userService;        
+        private readonly IHCaptchaTokenService captchaService;
 
-        public RegisterController(IUserService userService)
+        public RegisterController(
+            IUserService userService,
+            IHCaptchaTokenService captchaService
+            )
         {
-            this._userService = userService;
+            this.userService = userService;
+            this.captchaService = captchaService;
         }
 
         [AllowAnonymous]
@@ -26,14 +34,21 @@ namespace GrotWebApi.Controllers
         public IActionResult NewUser([FromBody] RegisterRequest model)
         {
             string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            bool isProduction = environment.Equals("Production");
+            //bool isProduction = environment.Equals("Production");
 
-            if (isProduction && string.IsNullOrEmpty(model.CaptchaToken))
+            if (string.IsNullOrEmpty(model.CaptchaToken))
             {
-                return BadRequest(new { message = "Bot are not allowed to create accounts" });
+                return BadRequest(new { message = "Bots are not allowed to create accounts" });
             }
 
-            var response = _userService.Register(model);
+            var hCaptchaVerification = captchaService.IsCaptchaValid(model.CaptchaToken);
+
+            if (!hCaptchaVerification)
+            {
+                return BadRequest(new { message = "Bots are not allowed to create accounts" });
+            }
+
+            var response = userService.Register(model);
 
             if (response == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
