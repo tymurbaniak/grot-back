@@ -87,8 +87,7 @@ namespace GrotWebApi.Controllers
             {
                 HttpOnly = true,
                 Expires = DateTime.UtcNow.AddDays(7),
-                SameSite = SameSiteMode.None,
-                Secure = !isDev
+                SameSite = SameSiteMode.None
             };
             Response.Cookies.Append("refreshToken", token, cookieOptions);
         }

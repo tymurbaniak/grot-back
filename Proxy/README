@@ -1,0 +1,8 @@
+Here is the configuration for proxy container. 
+To make it work for ssl you need to generate private key and public certificate in certs directory,
+those files will be copied to proxy for nginx during building docker images.
+
+To create key and crt use;
+openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=domain-name-on-localhost" -keyout certs/nginx-selfsigned.key -out certs/nginx-selfsigned.crt
+and
+openssl dhparam -out certs/dhparam.pem 2048

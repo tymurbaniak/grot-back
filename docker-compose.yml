@@ -5,8 +5,6 @@ services:
     container_name: grot-mysql
     restart: always
     image: mysql
-    ports:
-      - 3306:3306
     volumes:
       - ./test-sql-2:/docker-entrypoint-initdb.d
     environment:
@@ -14,9 +12,9 @@ services:
       MYSQL_DATABASE: grot
       MYSQL_USER: grot
       MYSQL_PASSWORD: grot
-  grotmigrations:
-    container_name: grotmigrations
-    image: ${DOCKER_REGISTRY-}grotmigrations
+  grot-migrations:
+    container_name: grot-migrations
+    image: ${DOCKER_REGISTRY-}grot-migrations
     links:
       - grot-mysql
     build:
@@ -51,6 +49,7 @@ services:
     depends_on: 
       - grot-api
   grot-proxy:
+    container_name: grot-proxy
     image: ${DOCKER_REGISTRY-}grot-proxy
     build:
       context: .
@@ -60,4 +59,5 @@ services:
       - grot-front
     ports:
       - "80:80"
+      - "443:443"
   
