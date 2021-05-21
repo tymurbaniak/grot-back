@@ -456,3 +456,10 @@ $RECYCLE.BIN/
 **/appsettings.json
 **/appsettings.Development.json
 **/appsettings.Docker.json
+
+##
+## keys, certs and security
+##
+**/*.key
+**/*.crt
+**/*.pem
