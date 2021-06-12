@@ -44,8 +44,8 @@ services:
       - ENV_BACKEND_URI='http://localhost/api'
       - ENV_IS_PRODUCTION=false
     build:
-      context: .
-      dockerfile: grot-front/Dockerfile
+      context: grot-front
+      dockerfile: Dockerfile
     depends_on: 
       - grot-api
   grot-proxy:
